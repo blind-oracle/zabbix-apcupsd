@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2021-02-03T15:10:40Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template_APCUPSD</template>
+            <name>Template_APCUPSD</name>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>APCUPSD</name>
+                </application>
+                <application>
+                    <name>APCUPSD Raw</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>APCUPSD - Battery Voltage</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.battv</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>V</units>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.BATTV</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>APCUPSD - Battery Charge</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.bcharge</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.BCHARGE</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;{$APCUPSD_CHARGE_CRIT}</expression>
+                            <name>UPS battery charge is critical ({ITEM.LASTVALUE})</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                        <trigger>
+                            <expression>{last()}&lt;{$APCUPSD_CHARGE_LOW}</expression>
+                            <name>UPS battery charge is low ({ITEM.LASTVALUE})</name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>APCUPSD - UPS Firmware</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.firmware</key>
+                    <delay>0</delay>
+                    <history>1h</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.FIRMWARE</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>APCUPSD - Temp Internal</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.itemp</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>C</units>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.ITEMP</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <expression>{min(180)}&gt;{$APCUPSD_TEMP_CRIT}</expression>
+                            <name>UPS temperature is critical ({ITEM.LASTVALUE})</name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                        <trigger>
+                            <expression>{min(180)}&gt;{$APCUPSD_TEMP_HIGH}</expression>
+                            <name>UPS temperature is high ({ITEM.LASTVALUE})</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>APCUPSD - Line Frequency</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.linefreq</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>Hz</units>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.LINEFREQ</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>APCUPSD - Load Percentage</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.loadpct</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.LOADPCT</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <expression>{min(180)}&gt;{$APCUPSD_LOAD_CRIT}</expression>
+                            <name>UPS load is critical ({ITEM.LASTVALUE})</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                        <trigger>
+                            <expression>{min(180)}&gt;{$APCUPSD_LOAD_HIGH}</expression>
+                            <name>UPS load is high ({ITEM.LASTVALUE})</name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>APCUPSD - UPS Model</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.model</key>
+                    <delay>0</delay>
+                    <history>1h</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.MODEL</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>APCUPSD - Online</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.online</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>YesNo</name>
+                    </valuemap>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.STATUS</params>
+                        </step>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <params>if (value === 'ONLINE') {
+ return 1;
+}
+
+return 0;</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;&gt;1</expression>
+                            <name>UPS is not ONLINE</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>APCUPSD - Self Test</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.selftest</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>YesNo</name>
+                    </valuemap>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.SELFTEST</params>
+                        </step>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <params>if (value === 'NO') {
+ return 0;
+}
+
+return 1;</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;&gt;0</expression>
+                            <name>UPS Self Test is running</name>
+                            <priority>INFO</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>APCUPSD - UPS Serial Number</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.serialno</key>
+                    <delay>0</delay>
+                    <history>1h</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.SERIALNO</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>APCUPSD - Run time on battery</name>
+                    <type>DEPENDENT</type>
+                    <key>apcupsd.timeleft</key>
+                    <delay>0</delay>
+                    <history>30d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>min</units>
+                    <applications>
+                        <application>
+                            <name>APCUPSD</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <params>$.TIMELEFT</params>
+                        </step>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.016666666666667</params>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>APCUPSD JSON</name>
+                    <key>apc[&quot;{$APCUPSD_HOST}&quot;, &quot;{$APCUPSD_PORT}&quot;]</key>
+                    <history>0</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>APCUPSD Raw</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+            <macros>
+                <macro>
+                    <macro>{$APCUPSD_CHARGE_CRIT}</macro>
+                    <value>10</value>
+                    <description>Battery charge crit low threshold</description>
+                </macro>
+                <macro>
+                    <macro>{$APCUPSD_CHARGE_LOW}</macro>
+                    <value>30</value>
+                    <description>Battery charge low threshold</description>
+                </macro>
+                <macro>
+                    <macro>{$APCUPSD_HOST}</macro>
+                    <value>127.0.0.1</value>
+                    <description>Host to query</description>
+                </macro>
+                <macro>
+                    <macro>{$APCUPSD_LOAD_CRIT}</macro>
+                    <value>90</value>
+                    <description>UPS load crit threshold</description>
+                </macro>
+                <macro>
+                    <macro>{$APCUPSD_LOAD_HIGH}</macro>
+                    <value>70</value>
+                    <description>UPS load high threshold</description>
+                </macro>
+                <macro>
+                    <macro>{$APCUPSD_PORT}</macro>
+                    <value>3551</value>
+                    <description>Port to query</description>
+                </macro>
+                <macro>
+                    <macro>{$APCUPSD_TEMP_CRIT}</macro>
+                    <value>50</value>
+                    <description>Temperature crit threshold</description>
+                </macro>
+                <macro>
+                    <macro>{$APCUPSD_TEMP_HIGH}</macro>
+                    <value>40</value>
+                    <description>Temperature high threshold</description>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+    <value_maps>
+        <value_map>
+            <name>YesNo</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>No</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Yes</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
+</zabbix_export>
